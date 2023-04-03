@@ -1,13 +1,3 @@
-# from functools import reduce
-
-# list1 = [1, 2, 3]
-# list2 = [2, 3, 4]
-# list3 = [3, 4, 5]
-
-# common_elements = reduce(set.intersection, map(set, [list1] + [list2] + [list3]))
-
-# print(common_elements) # Output: {3}
-
 def compare_lists(name_a, a, name_b, b):
     # exist_list = [item for item in a if item in b]
     exist_list = set(a) & set(b)
