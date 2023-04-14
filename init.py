@@ -1,20 +1,60 @@
-def compare_lists(name_a, a, name_b, b):
-    # exist_list = [item for item in a if item in b]
-    exist_list = set(a) & set(b)
-    print("{} compare {}".format(name_a, name_b))
-    print(exist_list)
+import csv
 
-apr_2_2023 = [6316, 1177, 5237, 2109, 970, 3196, 9752, 4495, 2174, 6107, 8926, 9094,
-              1733, 742, 544, 9885, 8040, 2219, 9824, 4829, 216, 486, 6256]
+with open(file="record_magnum.csv", mode="r", encoding="UTF8") as f:
+    csv_read = csv.reader(f)
 
-mar_29_2023 = [890, 7046, 9310, 2940, 5796, 5268, 9781, 1978, 3322, 108, 2511, 3225,
-               7697, 5810, 6471, 7352, 9708, 324, 4468, 3439, 7721, 5083, 2917]
+    list_of_number = [row for row in csv_read if len(row[0]) == 4]
 
-mar_26_2023 = [23, 1446, 8258, 8551, 9534, 3626, 4230, 2795, 642, 1537, 4296, 6050,
-               3571, 2522, 607, 5444, 1255, 3290, 6493, 7720, 5884, 9677, 4973, 6316]
+    int_list_of_number = [int(item[0]) for item in list_of_number]
 
-full_list = [("2/4/2023", apr_2_2023), ("26/3/2023", mar_26_2023), ("29/3/2023", mar_29_2023)]
+# print(int_list_of_number)
 
-for i in range(len(full_list)):
-    for j in range(i + 1, len(full_list)):
-        compare_lists(full_list[i][0], full_list[i][1], full_list[j][0], full_list[j][1])
+counts = {}
+for num in int_list_of_number:
+    if num in counts:
+        counts[num] += 1
+    else:
+        counts[num] = 1
+
+for i in range(0, 10000):
+    if i not in counts:
+        counts[i] = 0
+ 
+sorted_dict = {k: counts[k] for k in sorted(counts.keys())}
+# print(sorted_dict)
+
+appeared_once = []
+never_exist = []
+appeared_more_than_once = []
+for key, value in sorted_dict.items():
+    if value == 1:
+        appeared_once.append(key)
+    elif value == 0:
+        never_exist.append(key)
+    elif value >= 2:
+        appeared_more_than_once.append(key)
+
+# print("never exist list = {}".format(never_exist))
+# print("exist once list = {}".format(appeared_once))
+# print("exist more than once list = {}".format(appeared_more_than_once))
+
+todays = [391, 8495, 7126, 4589, 4048, 8249, 6837, 4080, 6141, 5093, 3317, 7349, 2948, 9776, 914, 1186, 7646, 5280, 7055, 77, 8934, 7581, 4684]
+
+appeared_again = [item for item in todays if item in sorted_dict.keys() and sorted_dict[item] >= 1]
+not_appeared = [item for item in todays if item in sorted_dict.keys() and sorted_dict[item] == 0]
+
+print("appeared again : {}".format(appeared_again))
+print("new number list : {}".format(not_appeared))
+
+for item in appeared_again:
+    print("{} = {}".format(item, sorted_dict[item]))
+
+# for item in todays:
+#     if item in sorted_dict.keys():
+#         new_appeared = []
+# print(counts)
+# for num, count in counts.items():
+#     print(f"{num}: {count}")
+
+print(len(counts))
+
